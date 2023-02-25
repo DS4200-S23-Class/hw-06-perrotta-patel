@@ -1,0 +1,20 @@
+/* Sets all font to Arial */
+body{
+    font-family: Arial;
+}
+
+/* Centers the headers */
+.center{
+    text-align: center;
+}
+
+/* Flexbox */
+.flexbox {
+    display: flex;
+    flex-direction: row;
+}
+
+/* Each column takes a third of the webpage */
+#column {
+    flex:33%;
+}
