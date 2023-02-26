@@ -85,6 +85,123 @@ function left_vis() {
     });
 };
 
+// Middle Visualization Function
+function middle_vis() {
+    d3.csv('data/iris.csv').then((data) => {
+        // Gets max x and max y values 
+        const MAX_X = d3.max(data, (d) => {
+            return parseFloat(d.Petal_Width)
+        });
+
+        const MAX_Y = d3.max(data, (d) => {
+            return parseFloat(d.Sepal_Width)
+        });
+
+        // Scale x and y values
+        const X_SCALE = d3.scaleLinear()
+            .domain([0, MAX_X])
+            .range([0, VIS_WIDTH]);
+
+        const Y_SCALE = d3.scaleLinear()
+            .domain([0, MAX_Y])
+            .range([VIS_HEIGHT, 0]);
+
+        // Colors for identification
+        const colors = d3.scaleOrdinal().domain(data)
+            .range(["purple", "green", "orange"])
+
+        // adding points from the csv 
+        FRAME2.selectAll('points')
+            .data(data)
+            .enter()
+            .append('circle')
+            .attr('cx', (d) => {
+                return (MARGINS.left + X_SCALE(d.Petal_Width))
+            })
+            .attr('cy', (d) => {
+                return (MARGINS.top + Y_SCALE(d.Sepal_Width))
+            })
+            .attr('r', 5)
+            .attr('fill', function(d){return colors(d.Species)})
+            .attr('opacity', 0.5)
+            .attr('class', 'point');
+
+        // creating x-axis to visualization
+        FRAME2.append('g')
+            .attr('transform', 'translate(' + MARGINS.left + ',' + (VIS_HEIGHT + MARGINS.top) + ')')
+            .call(d3.axisBottom(X_SCALE).ticks(10))
+            .attr('font-size', '10px');
+        
+        // creating y-axis to visualization
+        FRAME2.append('g')
+            .attr('transform', 'translate(' + MARGINS.top + ',' + MARGINS.left + ')')
+            .call(d3.axisLeft(Y_SCALE).ticks(10))
+            .attr('font-size', '10px');
+        });
+    };
+
+    //third visualization function 
+    function right_vis() {
+
+        // hardcoding dataset as instructed
+        const data = [
+            {label: "setosa", value: 50},
+            {label: "versicolor", value: 50},
+            {label: "verginica", value: 50}
+          ];
+    
+        const VIS_PADDING = 0.25;
+        
+        // Scale x and y values
+        const X_SCALE = d3.scaleBand()
+          .domain(data.map(d => d.label))
+          .range([0, VIS_WIDTH])
+          .padding(VIS_PADDING);
+    
+        const Y_SCALE = d3.scaleLinear()
+          .domain([0, d3.max(data, d => d.value)])
+          .range([VIS_HEIGHT, 0]);
+    
+        // adding points from the csv
+        FRAME3.selectAll('rect')
+                .data(data)
+                .enter()
+                .append('rect')
+                .attr('x', d => X_SCALE(d.label) + MARGINS.left)
+                .attr('width', X_SCALE.bandwidth())
+                .attr('y', d => MARGINS.top + Y_SCALE(d.value))
+                .attr('height', d => VIS_HEIGHT - Y_SCALE(d.value))
+                .attr('fill', 'blue')
+                .attr('class', 'rect')
+
+                // color assignment based on label values 
+                .attr("fill", d => {
+                    if (d.label === "setosa") {
+                      return "green";
+                    } else if (d.label === "versicolor") {
+                      return "purple";
+                    } else if (d.label === "verginica") {
+                      return "orange";
+                    }
+                });
+
+        // create x-axis to visualization
+        FRAME3.append('g')
+                .attr('transform', 'translate(' + MARGINS.left + ',' + (VIS_HEIGHT + MARGINS.top) + ')')
+                .call(d3.axisBottom(X_SCALE).ticks(3))
+                .attr('font-size', '10px');
+    
+        // create y-axis to visualization
+        FRAME3.append('g')
+                .attr('transform', 'translate(' + MARGINS.top + ',' + MARGINS.left + ')')
+                .call(d3.axisLeft(Y_SCALE).ticks(10))
+                .attr('font-size', '10px');
+    };
+
 
 // Runs visualization functions
 left_vis();
+
+middle_vis();
+
+right_vis();
