@@ -1,4 +1,5 @@
 /* Sets all font to Arial */
+
 body{
     font-family: Arial;
 }
@@ -6,6 +7,11 @@ body{
 /* Centers the headers */
 .center{
     text-align: center;
+}
+
+/* Opacity of 50% for all points */
+.point {
+	opacity: 0.5;
 }
 
 /* Flexbox */
@@ -17,4 +23,11 @@ body{
 /* Each column takes a third of the webpage */
 #column {
     flex:33%;
+}
+
+/* Brush design changes */
+.selected {
+    stroke: black;
+    stroke-width: 1px;
+    opacity: 1;
 }

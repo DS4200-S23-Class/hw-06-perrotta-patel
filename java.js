@@ -1,3 +1,7 @@
+/* Things to do */
+/* Add 50% opacity to all colors */
+/* Add brushing and linking */
+
 // Setting up constant variables 
 const FRAME_HEIGHT = 550;
 const FRAME_WIDTH = 500;
@@ -111,7 +115,7 @@ function middle_vis() {
             .range(["purple", "green", "orange"])
 
         // adding points from the csv 
-        FRAME2.selectAll('points')
+        const points = FRAME2.selectAll('points')
             .data(data)
             .enter()
             .append('circle')
@@ -137,6 +141,32 @@ function middle_vis() {
             .attr('transform', 'translate(' + MARGINS.top + ',' + MARGINS.left + ')')
             .call(d3.axisLeft(Y_SCALE).ticks(10))
             .attr('font-size', '10px');
+
+        FRAME2.call(d3.brush()
+            .extent([[MARGINS.left, MARGINS.bottom], [VIS_WIDTH + MARGINS.left, VIS_HEIGHT+  MARGINS.top]])
+                .on("begin brush", changeChart));
+        
+        // handles brush occurences 
+        function changeChart(event) {
+            extent = event.selection;
+                    
+            // adds class if boolean value returns true 
+            points.classed("selected", function(d){ 
+                return pointInSelection(extent, X_SCALE(d.Petal_Width) + MARGINS.left, Y_SCALE(d.Sepal_Width) + MARGINS.top )} );
+        }
+        
+            // checking whether or not a point is within a selection
+            function pointInSelection(extent, cx, cy) {
+                const x0 = extent[0][0];
+                const x1 = extent[1][0];
+                const y0 = extent[0][1];
+                const y1 = extent[1][1];  
+        
+                return x0 <= cx && 
+                cx <= x1 && 
+                y0 <= cy && 
+                cy <= y1;
+                }
         });
     };
 
