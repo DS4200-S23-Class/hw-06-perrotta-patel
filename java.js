@@ -94,11 +94,11 @@ function middle_vis() {
     d3.csv('data/iris.csv').then((data) => {
         // Gets max x and max y values 
         const MAX_X = d3.max(data, (d) => {
-            return parseFloat(d.Petal_Width)
+            return parseFloat(d.Sepal_Width)
         });
 
         const MAX_Y = d3.max(data, (d) => {
-            return parseFloat(d.Sepal_Width)
+            return parseFloat(d.Petal_Width)
         });
 
         // Scale x and y values
@@ -120,26 +120,26 @@ function middle_vis() {
             .enter()
             .append('circle')
             .attr('cx', (d) => {
-                return (MARGINS.left + X_SCALE(d.Petal_Width))
+                return (MARGINS.left + X_SCALE(d.Sepal_Width))
             })
             .attr('cy', (d) => {
-                return (MARGINS.top + Y_SCALE(d.Sepal_Width))
+                return (MARGINS.top + Y_SCALE(d.Petal_Width))
             })
             .attr('r', 5)
             .attr('fill', function(d){return colors(d.Species)})
             .attr('opacity', 0.5)
             .attr('class', 'point');
-
-        // creating x-axis to visualization
-        FRAME2.append('g')
-            .attr('transform', 'translate(' + MARGINS.left + ',' + (VIS_HEIGHT + MARGINS.top) + ')')
-            .call(d3.axisBottom(X_SCALE).ticks(10))
-            .attr('font-size', '10px');
         
         // creating y-axis to visualization
         FRAME2.append('g')
             .attr('transform', 'translate(' + MARGINS.top + ',' + MARGINS.left + ')')
             .call(d3.axisLeft(Y_SCALE).ticks(10))
+            .attr('font-size', '10px');
+
+        // creating x-axis to visualization
+        FRAME2.append('g')
+            .attr('transform', 'translate(' + MARGINS.left + ',' + (VIS_HEIGHT + MARGINS.top) + ')')
+            .call(d3.axisBottom(X_SCALE).ticks(10))
             .attr('font-size', '10px');
 
         FRAME2.call(d3.brush()
@@ -175,9 +175,9 @@ function middle_vis() {
 
         // hardcoding dataset as instructed
         const data = [
-            {label: "setosa", value: 50},
+            {label: "verginica", value: 50},
             {label: "versicolor", value: 50},
-            {label: "verginica", value: 50}
+            {label: "setosa", value: 50}
           ];
     
         const VIS_PADDING = 0.25;
@@ -206,13 +206,14 @@ function middle_vis() {
 
                 // color assignment based on label values 
                 .attr("fill", d => {
-                    if (d.label === "setosa") {
-                      return "green";
-                    } else if (d.label === "versicolor") {
-                      return "purple";
-                    } else if (d.label === "verginica") {
-                      return "orange";
+                    if (d.label === "verginica") {
+                        return "purple";
                     }
+                     else if (d.label === "versicolor") {
+                      return "orange";
+                    } else if (d.label === "setosa") {
+                        return "green";
+                      }
                 });
 
         // create x-axis to visualization
