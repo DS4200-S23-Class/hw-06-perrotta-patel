@@ -1,11 +1,10 @@
 /* Sets all font to Arial */
-
 body{
     font-family: Arial;
 }
 
 /* Centers the headers */
-.center{
+.center {
     text-align: center;
 }
 
@@ -26,8 +25,9 @@ body{
 }
 
 /* Brush design changes */
-.selected {
-    stroke: black;
-    stroke-width: 1px;
+.brushed {
+    border: orange;
+    stroke: orange;
+    stroke-width: 1.75px;
     opacity: 1;
 }
